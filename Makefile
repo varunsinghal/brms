@@ -21,4 +21,4 @@ create_factories:
 	poetry run python setup.py create_factories
 
 test:
-	poetry run pytest 
+	poetry run pytest -s 

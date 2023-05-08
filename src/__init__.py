@@ -22,6 +22,8 @@ logging.basicConfig(
     ],
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
 )
+logging.getLogger("faker").setLevel(logging.CRITICAL)
+logging.getLogger("factory").setLevel(logging.CRITICAL)
 
 
 def create_app(test_config=None):

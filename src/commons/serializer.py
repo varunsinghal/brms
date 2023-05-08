@@ -2,7 +2,11 @@ import logging
 
 import lxml.etree as ET
 
-from src.commons.models import SimpleTextBoxFormElement
+from src.commons.models import (
+    TFormElement,
+    TNumericTextBoxFormElement,
+    TSimpleTextBoxFormElement,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -17,25 +21,46 @@ class Serializer:
         xslt = ET.parse(f"xslt/{theme_folder}/{cls.template_name}")
         return ET.tostring(ET.XSLT(xslt)(dom)).decode()
 
+    @classmethod
+    def base_attributes(cls, instance: TFormElement):
+        return (
+            f"<id>{instance.id}</id>"
+            f"<identifier>{instance.identifier}</identifier>"
+            f"<label>{instance.label}</label>"
+            f"<sequence>{instance.sequence_no}</sequence>"
+            f"<tooltip>{instance.tooltip}</tooltip>"
+        )
+
 
 class SimpleTextBoxSerializer(Serializer):
     template_name: str = "simple_textbox.xsl"
 
     @classmethod
-    def to_xml(cls, instance: SimpleTextBoxFormElement) -> str:
+    def to_xml(cls, instance: TSimpleTextBoxFormElement) -> str:
         xml = "<simple-textbox>"
-        xml += f"<id>{instance.id}</id>"
-        xml += f"<label>{instance.label}</label>"
-        xml += f"<sequence>{instance.sequence_no}</sequence>"
-        if instance.tooltip:
-            xml += f"<tooltip>{instance.tooltip}</tooltip>"
-        if instance.max_length:
-            xml += f"<max-length>{instance.max_length}</max-length>"
+        xml += cls.base_attributes(instance)
+        xml += f"<max-length>{instance.max_length}</max-length>"
         xml += "</simple-textbox>"
         return xml
 
 
-MAPPING = {SimpleTextBoxFormElement: SimpleTextBoxSerializer}
+class NumericTextBoxSerializer(Serializer):
+    template_name: str = "numeric_textbox.xsl"
+
+    @classmethod
+    def to_xml(cls, instance: TNumericTextBoxFormElement) -> str:
+        xml = "<numeric-textbox>"
+        xml += cls.base_attributes(instance)
+        xml += f"<min-value>{instance.min_value}</min-value>"
+        xml += f"<max-value>{instance.max_value}</max-value>"
+        xml += "</numeric-textbox>"
+        return xml
+
+
+MAPPING = {
+    TSimpleTextBoxFormElement: SimpleTextBoxSerializer,
+    TNumericTextBoxFormElement: NumericTextBoxSerializer,
+}
 
 
 def serialize(instance, theme: str = "default") -> str:
