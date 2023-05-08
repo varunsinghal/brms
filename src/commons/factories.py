@@ -7,6 +7,7 @@ from src.commons.models import (
     TDateTextBoxFormElement,
     TFormElement,
     TFormTemplate,
+    TLargeTextBoxFormElement,
     TNumericTextBoxFormElement,
     TSimpleTextBoxFormElement,
 )
@@ -76,3 +77,11 @@ def make_date_textbox_factory() -> factory.Factory:
         max_date = factory.Faker("date")
 
     return _DateTextBoxFactory
+
+
+def make_large_textbox_factory() -> factory.Factory:
+    class _LargeTextBoxFactory(FormElementFactory):
+        class Meta:
+            model = TLargeTextBoxFormElement
+
+    return _LargeTextBoxFactory

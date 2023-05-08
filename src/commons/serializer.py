@@ -5,6 +5,7 @@ import lxml.etree as ET
 from src.commons.models import (
     TDateTextBoxFormElement,
     TFormElement,
+    TLargeTextBoxFormElement,
     TNumericTextBoxFormElement,
     TSimpleTextBoxFormElement,
 )
@@ -71,10 +72,22 @@ class DateTextBoxSerializer(Serializer):
         return xml
 
 
+class LargeTextBoxSerializer(Serializer):
+    template_name: str = "large_textbox.xsl"
+
+    @classmethod
+    def to_xml(cls, instance: TLargeTextBoxFormElement) -> str:
+        xml = "<large-textbox>"
+        xml += cls.base_attributes(instance)
+        xml += "</large-textbox>"
+        return xml
+
+
 MAPPING = {
     TSimpleTextBoxFormElement: SimpleTextBoxSerializer,
     TNumericTextBoxFormElement: NumericTextBoxSerializer,
     TDateTextBoxFormElement: DateTextBoxSerializer,
+    TLargeTextBoxFormElement: LargeTextBoxSerializer,
 }
 
 
