@@ -4,6 +4,7 @@ import factory
 import factory.fuzzy
 
 from src.commons.models import (
+    TDateTextBoxFormElement,
     TFormElement,
     TFormTemplate,
     TNumericTextBoxFormElement,
@@ -64,3 +65,14 @@ def make_numeric_textbox_factory() -> factory.Factory:
         max_value = factory.fuzzy.FuzzyInteger(low=20, high=30)
 
     return _NumericTextBoxFactory
+
+
+def make_date_textbox_factory() -> factory.Factory:
+    class _DateTextBoxFactory(FormElementFactory):
+        class Meta:
+            model = TDateTextBoxFormElement
+
+        min_date = factory.Faker("date")
+        max_date = factory.Faker("date")
+
+    return _DateTextBoxFactory

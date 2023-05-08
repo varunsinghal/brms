@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from src.commons.database import get_session
 from src.commons.factories import (
+    make_date_textbox_factory,
     make_form_template_factory,
     make_numeric_textbox_factory,
     make_simple_textbox_factory,
@@ -42,3 +43,11 @@ class TestSerializer(TestCase):
         print(serialize(textbox))
         self.session.add(textbox)
         self.session.commit()
+
+    def test_date_textbox(self):
+        textbox = make_date_textbox_factory().create(
+            form_template=self.form_template,
+        )
+        self.session.add(textbox)
+        self.session.commit()
+        print(serialize(textbox))

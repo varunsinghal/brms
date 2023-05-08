@@ -73,8 +73,8 @@ class TDateTextBoxFormElement(TFormElement):
     id: Mapped[int] = mapped_column(
         ForeignKey("t_form_element"), primary_key=True
     )
-    min_date = Column(DateTime)
-    max_date = Column(DateTime)
+    min_date = Column(String(80))
+    max_date = Column(String(80))
 
     __mapper_args__ = {"polymorphic_identity": "date_textbox"}
 

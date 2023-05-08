@@ -3,6 +3,7 @@ import logging
 import lxml.etree as ET
 
 from src.commons.models import (
+    TDateTextBoxFormElement,
     TFormElement,
     TNumericTextBoxFormElement,
     TSimpleTextBoxFormElement,
@@ -57,9 +58,23 @@ class NumericTextBoxSerializer(Serializer):
         return xml
 
 
+class DateTextBoxSerializer(Serializer):
+    template_name: str = "date_textbox.xsl"
+
+    @classmethod
+    def to_xml(cls, instance: TDateTextBoxFormElement) -> str:
+        xml = "<date-textbox>"
+        xml += cls.base_attributes(instance)
+        xml += f"<min-date>{instance.min_date}</min-date>"
+        xml += f"<max-date>{instance.max_date}</max-date>"
+        xml += "</date-textbox>"
+        return xml
+
+
 MAPPING = {
     TSimpleTextBoxFormElement: SimpleTextBoxSerializer,
     TNumericTextBoxFormElement: NumericTextBoxSerializer,
+    TDateTextBoxFormElement: DateTextBoxSerializer,
 }
 
 
