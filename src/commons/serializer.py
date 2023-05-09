@@ -11,20 +11,21 @@ from src.commons.models import (
     TNumericTextBoxFormElement,
     TRadioButtonFormElement,
     TSimpleTextBoxFormElement,
+    TSingleSelectFormElement,
 )
 
 logger = logging.getLogger(__name__)
 
 
 class Serializer:
-    template_name: str = None
+    template_name: str = ""
 
     @classmethod
-    def to_html(cls, xml, theme_folder: str):
-        xml = xml.encode()
-        dom = ET.fromstring(xml)
-        xslt = ET.parse(f"xslt/{theme_folder}/{cls.template_name}")
-        return ET.tostring(ET.XSLT(xslt)(dom)).decode()
+    def to_html(cls, xml: str, theme_folder: str):
+        xml_bytes = xml.encode()
+        dom = ET.fromstring(xml_bytes)
+        xslt = ET.parse(f"templates/forms/{theme_folder}/{cls.template_name}")
+        return ET.tostring(ET.XSLT(xslt)(dom), method="html").decode()
 
     @classmethod
     def base_attributes(cls, instance: TFormElement):
@@ -113,6 +114,24 @@ class RadioButtonSerializer(Serializer):
         return xml
 
 
+class SingleSelectSerializer(Serializer):
+    template_name: str = "single_select.xsl"
+
+    @classmethod
+    def to_xml(cls, instance: TSingleSelectFormElement) -> str:
+        xml = "<single-select>"
+        xml += cls.base_attributes(instance)
+        if instance.query:
+            xml += f"<query>{instance.query}</query>"
+        if instance.options:
+            xml += "<options>"
+            for each_option in instance.options.split(FIELD_SEPARATOR):
+                xml += f"<option><value>{each_option}</value></option>"
+            xml += "</options>"
+        xml += "</single-select>"
+        return xml
+
+
 MAPPING = {
     TSimpleTextBoxFormElement: SimpleTextBoxSerializer,
     TNumericTextBoxFormElement: NumericTextBoxSerializer,
@@ -120,6 +139,7 @@ MAPPING = {
     TLargeTextBoxFormElement: LargeTextBoxSerializer,
     TCheckBoxFormElement: CheckBoxSerializer,
     TRadioButtonFormElement: RadioButtonSerializer,
+    TSingleSelectFormElement: SingleSelectSerializer,
 }
 
 

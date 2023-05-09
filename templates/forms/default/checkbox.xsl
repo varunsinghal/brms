@@ -11,7 +11,8 @@
                 
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" 
-                           value="{$checkedValue}" id="{$identifier}" />
+                           value="{$checkedValue}" id="{$identifier}"
+                           name="{$identifier}" />
                     <label class="form-check-label" for="{$identifier}">
                         <xsl:value-of select="checkbox/label"/>
                     </label>

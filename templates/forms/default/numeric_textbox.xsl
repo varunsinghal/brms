@@ -15,7 +15,8 @@
                 </label>
                 
                 <input type="number" class="form-control form-control-sm" 
-                       id="{$identifier}" min="{$minValue}" max="{$maxValue}"/>
+                       id="{$identifier}" min="{$minValue}" max="{$maxValue}"
+                       name="{$identifier}"/>
                 
                 <small class="form-text form-text-sm text-muted">
                     <xsl:value-of select="numeric-textbox/tooltip"/>

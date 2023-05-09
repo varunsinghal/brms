@@ -9,6 +9,7 @@ from src.commons.factories import (
     make_numeric_textbox_factory,
     make_radiobutton_factory,
     make_simple_textbox_factory,
+    make_single_select_factory,
 )
 from src.commons.models import TFormTemplate
 from src.commons.serializer import serialize
@@ -78,3 +79,20 @@ class TestSerializer(TestCase):
         self.session.add(radio_button)
         self.session.commit()
         print(serialize(radio_button))
+
+    def test_single_select(self):
+        single_select = make_single_select_factory().create(
+            form_template=self.form_template,
+            depends_on=True,
+        )
+        self.session.add(single_select)
+        self.session.commit()
+        print(serialize(single_select))
+
+    def test_single_select_with_query(self):
+        single_select = make_single_select_factory().create(
+            form_template=self.form_template,
+        )
+        self.session.add(single_select)
+        self.session.commit()
+        print(serialize(single_select))

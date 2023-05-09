@@ -3,21 +3,21 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:template match="/">
         
-        <xsl:variable name="identifier" select="simple-textbox/identifier" />
-        <xsl:variable name="maxLength" select="simple-textbox/max-length" />
+        <xsl:variable name="identifier" select="large-textbox/identifier" />
         
         <div class="container">
             <div class="form-group">
                 
                 <label for="{$identifier}">
-                    <xsl:value-of select="simple-textbox/label"/> 
+                    <xsl:value-of select="large-textbox/label"/> 
                 </label>
                 
-                <input type="text" class="form-control form-control-sm" 
-                       id="{$identifier}" maxlength="{$maxLength}"/>
+                <textarea class="form-control form-control-sm" 
+                          id="{$identifier}" name="{$identifier}">
+                </textarea>
                 
                 <small class="form-text form-text-sm text-muted">
-                    <xsl:value-of select="simple-textbox/tooltip"/>
+                    <xsl:value-of select="large-textbox/tooltip"/>
                 </small>
                 
             </div>

@@ -14,10 +14,11 @@ from src.commons.models import (
     TNumericTextBoxFormElement,
     TRadioButtonFormElement,
     TSimpleTextBoxFormElement,
+    TSingleSelectFormElement,
 )
 
 
-def make_form_template_factory() -> factory.Factory:
+def make_form_template_factory():
     class _FormTemplateFactory(factory.Factory):
         class Meta:
             model = TFormTemplate
@@ -51,7 +52,7 @@ class FormElementFactory(factory.Factory):
     tooltip = factory.Faker("text", max_nb_chars=80)
 
 
-def make_simple_textbox_factory() -> factory.Factory:
+def make_simple_textbox_factory():
     class _SimpleTextBoxFactory(FormElementFactory):
         class Meta:
             model = TSimpleTextBoxFormElement
@@ -61,7 +62,7 @@ def make_simple_textbox_factory() -> factory.Factory:
     return _SimpleTextBoxFactory
 
 
-def make_numeric_textbox_factory() -> factory.Factory:
+def make_numeric_textbox_factory():
     class _NumericTextBoxFactory(FormElementFactory):
         class Meta:
             model = TNumericTextBoxFormElement
@@ -72,7 +73,7 @@ def make_numeric_textbox_factory() -> factory.Factory:
     return _NumericTextBoxFactory
 
 
-def make_date_textbox_factory() -> factory.Factory:
+def make_date_textbox_factory():
     class _DateTextBoxFactory(FormElementFactory):
         class Meta:
             model = TDateTextBoxFormElement
@@ -83,7 +84,7 @@ def make_date_textbox_factory() -> factory.Factory:
     return _DateTextBoxFactory
 
 
-def make_large_textbox_factory() -> factory.Factory:
+def make_large_textbox_factory():
     class _LargeTextBoxFactory(FormElementFactory):
         class Meta:
             model = TLargeTextBoxFormElement
@@ -91,7 +92,7 @@ def make_large_textbox_factory() -> factory.Factory:
     return _LargeTextBoxFactory
 
 
-def make_checkbox_factory() -> factory.Factory:
+def make_checkbox_factory():
     class _CheckBoxFactory(FormElementFactory):
         class Meta:
             model = TCheckBoxFormElement
@@ -101,7 +102,7 @@ def make_checkbox_factory() -> factory.Factory:
     return _CheckBoxFactory
 
 
-def make_radiobutton_factory() -> factory.Factory:
+def make_radiobutton_factory():
     class _RadioButtonFactory(FormElementFactory):
         class Meta:
             model = TRadioButtonFormElement
@@ -111,3 +112,23 @@ def make_radiobutton_factory() -> factory.Factory:
             return FIELD_SEPARATOR.join(Faker().words())
 
     return _RadioButtonFactory
+
+
+def make_single_select_factory():
+    class _SingleSelectFactory(FormElementFactory):
+        class Meta:
+            model = TSingleSelectFormElement
+
+        class Params:
+            depends_on: bool = False
+
+        query = factory.LazyAttribute(
+            lambda o: "select A from T where C = 123" if o.depends_on else None
+        )
+        options = factory.LazyAttribute(
+            lambda o: FIELD_SEPARATOR.join(Faker().words())
+            if not o.depends_on
+            else None
+        )
+
+    return _SingleSelectFactory

@@ -3,6 +3,8 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, declarative_base, mapped_column, relationship
 from sqlalchemy.sql import func
 
+from src.commons.constants import FORM_PREFIX
+
 Model = declarative_base()
 
 
@@ -33,7 +35,7 @@ class TFormElement(Model):
 
     @hybrid_property
     def identifier(self):
-        return f"{self.__class__.__name__}-{self.id}"
+        return f"{FORM_PREFIX}{self.id}"
 
     __mapper_args__ = {
         "polymorphic_identity": "form_element",
