@@ -95,7 +95,7 @@ class TCheckBoxFormElement(TFormElement):
     id: Mapped[int] = mapped_column(
         ForeignKey("t_form_element"), primary_key=True
     )
-    option = Column(String(256))
+    checked_value = Column(String(256))
 
     __mapper_args__ = {"polymorphic_identity": "checkbox"}
 

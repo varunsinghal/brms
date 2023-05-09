@@ -4,6 +4,7 @@ import factory
 import factory.fuzzy
 
 from src.commons.models import (
+    TCheckBoxFormElement,
     TDateTextBoxFormElement,
     TFormElement,
     TFormTemplate,
@@ -85,3 +86,13 @@ def make_large_textbox_factory() -> factory.Factory:
             model = TLargeTextBoxFormElement
 
     return _LargeTextBoxFactory
+
+
+def make_checkbox_factory() -> factory.Factory:
+    class _CheckBoxFactory(FormElementFactory):
+        class Meta:
+            model = TCheckBoxFormElement
+
+        checked_value = factory.Faker("word")
+
+    return _CheckBoxFactory

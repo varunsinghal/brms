@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from src.commons.database import get_session
 from src.commons.factories import (
+    make_checkbox_factory,
     make_date_textbox_factory,
     make_form_template_factory,
     make_large_textbox_factory,
@@ -60,3 +61,11 @@ class TestSerializer(TestCase):
         self.session.add(textbox)
         self.session.commit()
         print(serialize(textbox))
+
+    def test_checkbox(self):
+        checkbox = make_checkbox_factory().create(
+            form_template=self.form_template,
+        )
+        self.session.add(checkbox)
+        self.session.commit()
+        print(serialize(checkbox))

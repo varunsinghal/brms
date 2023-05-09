@@ -3,6 +3,7 @@ import logging
 import lxml.etree as ET
 
 from src.commons.models import (
+    TCheckBoxFormElement,
     TDateTextBoxFormElement,
     TFormElement,
     TLargeTextBoxFormElement,
@@ -83,11 +84,24 @@ class LargeTextBoxSerializer(Serializer):
         return xml
 
 
+class CheckBoxSerializer(Serializer):
+    template_name: str = "checkbox.xsl"
+
+    @classmethod
+    def to_xml(cls, instance: TCheckBoxFormElement) -> str:
+        xml = "<checkbox>"
+        xml += cls.base_attributes(instance)
+        xml += f"<checked-value>{instance.checked_value}</checked-value>"
+        xml += "</checkbox>"
+        return xml
+
+
 MAPPING = {
     TSimpleTextBoxFormElement: SimpleTextBoxSerializer,
     TNumericTextBoxFormElement: NumericTextBoxSerializer,
     TDateTextBoxFormElement: DateTextBoxSerializer,
     TLargeTextBoxFormElement: LargeTextBoxSerializer,
+    TCheckBoxFormElement: CheckBoxSerializer,
 }
 
 
