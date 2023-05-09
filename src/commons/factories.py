@@ -2,7 +2,9 @@ from datetime import datetime, timedelta, timezone
 
 import factory
 import factory.fuzzy
+from faker import Faker
 
+from src.commons.constants import FIELD_SEPARATOR
 from src.commons.models import (
     TCheckBoxFormElement,
     TDateTextBoxFormElement,
@@ -10,6 +12,7 @@ from src.commons.models import (
     TFormTemplate,
     TLargeTextBoxFormElement,
     TNumericTextBoxFormElement,
+    TRadioButtonFormElement,
     TSimpleTextBoxFormElement,
 )
 
@@ -96,3 +99,15 @@ def make_checkbox_factory() -> factory.Factory:
         checked_value = factory.Faker("word")
 
     return _CheckBoxFactory
+
+
+def make_radiobutton_factory() -> factory.Factory:
+    class _RadioButtonFactory(FormElementFactory):
+        class Meta:
+            model = TRadioButtonFormElement
+
+        @factory.lazy_attribute
+        def options(self):
+            return FIELD_SEPARATOR.join(Faker().words())
+
+    return _RadioButtonFactory

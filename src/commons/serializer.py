@@ -2,12 +2,14 @@ import logging
 
 import lxml.etree as ET
 
+from src.commons.constants import FIELD_SEPARATOR
 from src.commons.models import (
     TCheckBoxFormElement,
     TDateTextBoxFormElement,
     TFormElement,
     TLargeTextBoxFormElement,
     TNumericTextBoxFormElement,
+    TRadioButtonFormElement,
     TSimpleTextBoxFormElement,
 )
 
@@ -96,12 +98,28 @@ class CheckBoxSerializer(Serializer):
         return xml
 
 
+class RadioButtonSerializer(Serializer):
+    template_name: str = "radiobutton.xsl"
+
+    @classmethod
+    def to_xml(cls, instance: TRadioButtonFormElement) -> str:
+        xml = "<radio-button>"
+        xml += cls.base_attributes(instance)
+        xml += "<options>"
+        for option in instance.options.split(FIELD_SEPARATOR):
+            xml += f"<option><value>{option}</value></option>"
+        xml += "</options>"
+        xml += "</radio-button>"
+        return xml
+
+
 MAPPING = {
     TSimpleTextBoxFormElement: SimpleTextBoxSerializer,
     TNumericTextBoxFormElement: NumericTextBoxSerializer,
     TDateTextBoxFormElement: DateTextBoxSerializer,
     TLargeTextBoxFormElement: LargeTextBoxSerializer,
     TCheckBoxFormElement: CheckBoxSerializer,
+    TRadioButtonFormElement: RadioButtonSerializer,
 }
 
 

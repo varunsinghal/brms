@@ -7,6 +7,7 @@ from src.commons.factories import (
     make_form_template_factory,
     make_large_textbox_factory,
     make_numeric_textbox_factory,
+    make_radiobutton_factory,
     make_simple_textbox_factory,
 )
 from src.commons.models import TFormTemplate
@@ -69,3 +70,11 @@ class TestSerializer(TestCase):
         self.session.add(checkbox)
         self.session.commit()
         print(serialize(checkbox))
+
+    def test_radiobutton(self):
+        radio_button = make_radiobutton_factory().create(
+            form_template=self.form_template,
+        )
+        self.session.add(radio_button)
+        self.session.commit()
+        print(serialize(radio_button))

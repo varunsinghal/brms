@@ -1,5 +1,5 @@
-from .database import get_engine, get_session
-from .models import Model
+from src.commons.database import get_engine, get_session
+from src.commons.models import Model
 
 
 def clean_db():
