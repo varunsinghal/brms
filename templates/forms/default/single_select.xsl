@@ -14,8 +14,7 @@
                 
                 <xsl:if test="single-select/query">
                     <select class="form-control form-control-sm" 
-                            name="{$identifier}" id="{$identifier}" 
-                            onclick="makeApiCall(this)">
+                            name="{$identifier}" id="{$identifier}">
                         <option></option>
                     </select>
                 </xsl:if>

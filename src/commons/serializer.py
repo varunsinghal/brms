@@ -8,6 +8,7 @@ from src.commons.models import (
     TDateTextBoxFormElement,
     TFormElement,
     TLargeTextBoxFormElement,
+    TMultiSelectFormElement,
     TNumericTextBoxFormElement,
     TRadioButtonFormElement,
     TSimpleTextBoxFormElement,
@@ -114,6 +115,21 @@ class RadioButtonSerializer(Serializer):
         return xml
 
 
+def get_option_or_query_xml(options: str, query: str):
+    if options:
+        xml = "<options>"
+        xml += "".join(
+            [
+                "<option><value>" + option + "</value></option>"
+                for option in options.split(FIELD_SEPARATOR)
+            ]
+        )
+        xml += "</options>"
+    else:
+        xml = f"<query>{query}</query>"
+    return xml
+
+
 class SingleSelectSerializer(Serializer):
     template_name: str = "single_select.xsl"
 
@@ -121,14 +137,20 @@ class SingleSelectSerializer(Serializer):
     def to_xml(cls, instance: TSingleSelectFormElement) -> str:
         xml = "<single-select>"
         xml += cls.base_attributes(instance)
-        if instance.query:
-            xml += f"<query>{instance.query}</query>"
-        if instance.options:
-            xml += "<options>"
-            for each_option in instance.options.split(FIELD_SEPARATOR):
-                xml += f"<option><value>{each_option}</value></option>"
-            xml += "</options>"
+        xml += get_option_or_query_xml(instance.options, instance.query)
         xml += "</single-select>"
+        return xml
+
+
+class MultiSelectSerializer(Serializer):
+    template_name: str = "multi_select.xsl"
+
+    @classmethod
+    def to_xml(cls, instance: TMultiSelectFormElement) -> str:
+        xml = "<multi-select>"
+        xml += cls.base_attributes(instance)
+        xml += get_option_or_query_xml(instance.options, instance.query)
+        xml += "</multi-select>"
         return xml
 
 
@@ -140,6 +162,7 @@ MAPPING = {
     TCheckBoxFormElement: CheckBoxSerializer,
     TRadioButtonFormElement: RadioButtonSerializer,
     TSingleSelectFormElement: SingleSelectSerializer,
+    TMultiSelectFormElement: MultiSelectSerializer,
 }
 
 

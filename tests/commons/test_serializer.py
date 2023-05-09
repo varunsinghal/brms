@@ -6,6 +6,7 @@ from src.commons.factories import (
     make_date_textbox_factory,
     make_form_template_factory,
     make_large_textbox_factory,
+    make_multi_select_factory,
     make_numeric_textbox_factory,
     make_radiobutton_factory,
     make_simple_textbox_factory,
@@ -83,7 +84,6 @@ class TestSerializer(TestCase):
     def test_single_select(self):
         single_select = make_single_select_factory().create(
             form_template=self.form_template,
-            depends_on=True,
         )
         self.session.add(single_select)
         self.session.commit()
@@ -92,7 +92,16 @@ class TestSerializer(TestCase):
     def test_single_select_with_query(self):
         single_select = make_single_select_factory().create(
             form_template=self.form_template,
+            depends_on=True,
         )
         self.session.add(single_select)
         self.session.commit()
         print(serialize(single_select))
+
+    def test_multi_select(self):
+        multi_select = make_multi_select_factory().create(
+            form_template=self.form_template,
+        )
+        self.session.add(multi_select)
+        self.session.commit()
+        print(serialize(multi_select))

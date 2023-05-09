@@ -11,6 +11,7 @@ from src.commons.models import (
     TFormElement,
     TFormTemplate,
     TLargeTextBoxFormElement,
+    TMultiSelectFormElement,
     TNumericTextBoxFormElement,
     TRadioButtonFormElement,
     TSimpleTextBoxFormElement,
@@ -114,21 +115,31 @@ def make_radiobutton_factory():
     return _RadioButtonFactory
 
 
+class _OptionAndQueryFactory(FormElementFactory):
+    class Params:
+        depends_on: bool = False
+
+    query = factory.LazyAttribute(
+        lambda o: "select A from T where C = 123" if o.depends_on else None
+    )
+    options = factory.LazyAttribute(
+        lambda o: FIELD_SEPARATOR.join(Faker().words())
+        if not o.depends_on
+        else None
+    )
+
+
 def make_single_select_factory():
-    class _SingleSelectFactory(FormElementFactory):
+    class _SingleSelectFactory(_OptionAndQueryFactory):
         class Meta:
             model = TSingleSelectFormElement
 
-        class Params:
-            depends_on: bool = False
-
-        query = factory.LazyAttribute(
-            lambda o: "select A from T where C = 123" if o.depends_on else None
-        )
-        options = factory.LazyAttribute(
-            lambda o: FIELD_SEPARATOR.join(Faker().words())
-            if not o.depends_on
-            else None
-        )
-
     return _SingleSelectFactory
+
+
+def make_multi_select_factory():
+    class _MultiSelectFactory(_OptionAndQueryFactory):
+        class Meta:
+            model = TMultiSelectFormElement
+
+    return _MultiSelectFactory
