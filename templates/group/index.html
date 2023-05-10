@@ -1,0 +1,29 @@
+{# _brms/templates/group/index.html_ #}
+
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="h3">
+    Groups
+</div>
+<br>
+<br>
+<div class="list-group list-group-flush">
+    {% for group_template in group_templates %}
+    <a href="#" class="list-group-item list-group-item-action mt-2 mb-2" aria-current="true">
+        <div class="row">
+            <div class="col-9">
+                <h5 class="mb-1">{{ group_template.name }}</h5>
+            </div>
+            <div class="col-3">
+                <small>Updated {{ group_template.modified_at | time_ago }}</small>
+            </div>
+        </div>
+        <small>{{ group_template.description }}</small>
+    </a>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -2,7 +2,7 @@ bash:
 	poetry shell 
 
 serve:
-	poetry run python app.py 
+	poetry run python app.py
 
 lint:
 	poetry run black .
@@ -17,8 +17,14 @@ lint_check:
 init_db:
 	poetry run python setup.py init_db
 
-create_factories:
+clean_db:
+	poetry run python setup.py clean_db
+
+factories:
 	poetry run python setup.py create_factories
+
+load_db:
+	poetry run python setup.py load_db 
 
 test:
 	poetry run pytest -s 

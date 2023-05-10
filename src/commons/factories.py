@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+from typing import List
 
 import factory
 import factory.fuzzy
@@ -10,6 +11,7 @@ from src.commons.models import (
     TDateTextBoxFormElement,
     TFormElement,
     TFormTemplate,
+    TGroupTemplate,
     TLargeTextBoxFormElement,
     TMultiOrderedSelectFormElement,
     TMultiSelectFormElement,
@@ -18,6 +20,18 @@ from src.commons.models import (
     TSimpleTextBoxFormElement,
     TSingleSelectFormElement,
 )
+
+
+def make_form_elements(
+    form_template: TFormTemplate, factories: List[factory.Factory]
+) -> List[TFormElement]:
+    fake = Faker()
+    elements = []
+    for each_factory in factories:
+        elements += each_factory.create_batch(
+            fake.random_int(max=5), form_template=form_template
+        )
+    return elements
 
 
 def make_form_template_factory():
@@ -40,6 +54,30 @@ def make_form_template_factory():
     return _FormTemplateFactory
 
 
+def make_group_template_factory():
+    class _GroupTemplateFactory(factory.Factory):
+        class Meta:
+            model = TGroupTemplate
+
+        class Params:
+            form_template = make_form_template_factory().create()
+            duration = factory.fuzzy.FuzzyInteger(low=1, high=100)
+
+        id = factory.Sequence(lambda n: n + 1)
+        name = factory.fuzzy.FuzzyText()
+        description = factory.Faker("text", max_nb_chars=80)
+        form_template_id = factory.LazyAttribute(lambda o: o.form_template.id)
+        is_active = True
+        created_at = factory.fuzzy.FuzzyDateTime(
+            datetime(2008, 1, 1, tzinfo=timezone.utc)
+        )
+        modified_at = factory.LazyAttribute(
+            lambda o: o.created_at + timedelta(o.duration)
+        )
+
+    return _GroupTemplateFactory
+
+
 class FormElementFactory(factory.Factory):
     class Meta:
         model = TFormElement
@@ -48,7 +86,7 @@ class FormElementFactory(factory.Factory):
         form_template = make_form_template_factory().create()
 
     id = factory.Sequence(lambda n: n + 1)
-    template_id = factory.LazyAttribute(lambda o: o.form_template.id)
+    form_template_id = factory.LazyAttribute(lambda o: o.form_template.id)
     sequence_no = factory.Sequence(lambda n: n + 1)
     label = factory.LazyAttribute(lambda o: f"Label {o.id}")
     tooltip = factory.Faker("text", max_nb_chars=80)

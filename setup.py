@@ -1,7 +1,7 @@
 import click
 
 from src import create_app
-from src.commons.scripts import clean_db, create_factories, init_db
+from src.commons.scripts import clean_db, create_factories, init_db, load_db
 
 
 @click.group(name="cli")
@@ -9,7 +9,14 @@ def cli():
     pass
 
 
-@cli.command(name="create_factories", help="create factories")
+@cli.command(name="load_db", help="load db")
+def load_db_cli():
+    app = create_app()
+    with app.app_context():
+        load_db()
+
+
+@cli.command(name="create_factories", help="create data")
 def create_factories_cli():
     app = create_app()
     with app.app_context():

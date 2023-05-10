@@ -1,5 +1,6 @@
 import logging
 import os
+from datetime import datetime
 from http import HTTPStatus
 from logging.handlers import TimedRotatingFileHandler
 
@@ -27,17 +28,27 @@ logging.getLogger("factory").setLevel(logging.CRITICAL)
 
 
 def create_app(test_config=None):
-    app = Flask(__name__)
-
-    app.config.from_pyfile(
-        os.path.dirname(os.path.dirname(__file__)) + os.path.sep + "config.py"
+    parent_dir = get_parent_directory()
+    app = Flask(
+        __name__,
+        static_folder=parent_dir + "static",
+        template_folder=parent_dir + "templates",
     )
+    app.config.from_pyfile(parent_dir + "config.py")
 
     if test_config:
         app.config.update(test_config)
 
     setup_handlers(app)
     setup_database(app)
+    setup_filters(app)
+
+    # views
+    from src.routes.group import group_app
+
+    app.register_blueprint(group_app, url_prefix="/views/group")
+
+    # apis
 
     return app
 
@@ -112,3 +123,28 @@ def setup_handlers(app):
             },
             HTTPStatus.NOT_FOUND,
         )
+
+
+def setup_filters(app):
+    @app.template_filter()
+    def time_ago(s):
+        now = datetime.now()
+        delta = now - s
+        if delta.days > 365:
+            return f"{delta.days // 365} years ago"
+        elif delta.days > 30:
+            return f"{delta.days // 30} months ago"
+        elif delta.days > 0:
+            return f"{delta.days} days ago"
+        elif delta.seconds >= 3600:
+            hours = delta.seconds // 3600
+            return f"{hours} hours ago"
+        elif delta.seconds >= 60:
+            minutes = delta.seconds // 60
+            return f"{minutes} minutes ago"
+        else:
+            return "just now"
+
+
+def get_parent_directory():
+    return os.path.dirname(os.path.dirname(__file__)) + os.path.sep

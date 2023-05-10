@@ -1,4 +1,12 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import (
+    Boolean,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+)
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, declarative_base, mapped_column, relationship
 from sqlalchemy.sql import func
@@ -6,6 +14,24 @@ from sqlalchemy.sql import func
 from src.commons.constants import FORM_PREFIX
 
 Model = declarative_base()
+
+
+class TGroupTemplate(Model):
+    __tablename__ = "t_group_template"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(80))
+    description = Column(Text)
+    form_template_id = Column(Integer, ForeignKey("t_form_template.id"))
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    modified_at = Column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+    form_template = relationship("TFormTemplate", backref="group_template")
+
+    def __repr__(self):
+        return f"<GroupTemplate-{self.name}>"
 
 
 class TFormTemplate(Model):
@@ -17,10 +43,43 @@ class TFormTemplate(Model):
     modified_at = Column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
-    elements = relationship("TFormElement", backref="form_template")
+    is_active = Column(Boolean, default=True)
+    elements = relationship("TFormElement", backref="form_elements")
+    submissions = relationship("TFormSubmission", backref="form_submissions")
 
     def __repr__(self):
         return f"<Form-{self.name}>"
+
+
+class TFormSubmission(Model):
+    __tablename__ = "t_form_submission"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(80))
+    form_template_id = Column(Integer, ForeignKey("t_form_template.id"))
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    modified_at = Column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+    is_deleted = Column(Boolean, default=False)
+
+    def __repr__(self):
+        return f"<FormSubmission-{self.name}>"
+
+
+class TFormElementSubmission(Model):
+    __tablename__ = "t_form_element_submission"
+
+    id = Column(Integer, primary_key=True)
+    from_submission_id = Column(Integer, ForeignKey("t_form_submission.id"))
+    form_element_id = Column(Integer, ForeignKey("t_form_element.id"))
+    value = Column(Text)
+    element = relationship(
+        "TFormElement", backref="form_element", uselist=False
+    )
+
+    def __repr__(self):
+        return f"<FormElementSubmission-{self.value}>"
 
 
 class TFormElement(Model):
@@ -28,7 +87,7 @@ class TFormElement(Model):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     type: Mapped[str]
-    template_id = Column(Integer, ForeignKey("t_form_template.id"))
+    form_template_id = Column(Integer, ForeignKey("t_form_template.id"))
     sequence_no = Column(Integer, nullable=False)
     label = Column(String(80))
     tooltip = Column(String(256))
