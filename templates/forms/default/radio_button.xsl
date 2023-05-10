@@ -7,19 +7,22 @@
         
         <div class="container">
             <div class="form-group">
+
+                <label class="form-check-label" >
+                    <xsl:value-of select="radio-button/label"/>
+                </label>
+            
                 <xsl:for-each select="radio-button/options/option">
                     <xsl:variable name="optionValue" select="value" />
-
                     <div class="form-check">
                         <input class="form-check-input" type="radio" 
                                value="{$optionValue}" 
                                name="{$identifier}" 
-                               id="{$identifier}" />
-                        <label class="form-check-label" for="{$identifier}">
+                               id="{$optionValue}" />
+                        <label class="form-check-label" for="{$optionValue}">
                             <xsl:value-of select="value"/>
                         </label>
-                    </div>    
-                    
+                    </div>            
                 </xsl:for-each>
                 
                 <small class="form-text form-text-sm text-muted">

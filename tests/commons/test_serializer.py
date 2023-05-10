@@ -6,6 +6,7 @@ from src.commons.factories import (
     make_date_textbox_factory,
     make_form_template_factory,
     make_large_textbox_factory,
+    make_multi_ordered_select_factory,
     make_multi_select_factory,
     make_numeric_textbox_factory,
     make_radiobutton_factory,
@@ -100,6 +101,14 @@ class TestSerializer(TestCase):
 
     def test_multi_select(self):
         multi_select = make_multi_select_factory().create(
+            form_template=self.form_template,
+        )
+        self.session.add(multi_select)
+        self.session.commit()
+        print(serialize(multi_select))
+
+    def test_multi_ordered_select(self):
+        multi_select = make_multi_ordered_select_factory().create(
             form_template=self.form_template,
         )
         self.session.add(multi_select)

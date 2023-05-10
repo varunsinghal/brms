@@ -11,6 +11,7 @@ from src.commons.models import (
     TFormElement,
     TFormTemplate,
     TLargeTextBoxFormElement,
+    TMultiOrderedSelectFormElement,
     TMultiSelectFormElement,
     TNumericTextBoxFormElement,
     TRadioButtonFormElement,
@@ -143,3 +144,11 @@ def make_multi_select_factory():
             model = TMultiSelectFormElement
 
     return _MultiSelectFactory
+
+
+def make_multi_ordered_select_factory():
+    class _MultiOrderedSelectFactory(_OptionAndQueryFactory):
+        class Meta:
+            model = TMultiOrderedSelectFormElement
+
+    return _MultiOrderedSelectFactory

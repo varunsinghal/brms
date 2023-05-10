@@ -8,6 +8,7 @@ from src.commons.models import (
     TDateTextBoxFormElement,
     TFormElement,
     TLargeTextBoxFormElement,
+    TMultiOrderedSelectFormElement,
     TMultiSelectFormElement,
     TNumericTextBoxFormElement,
     TRadioButtonFormElement,
@@ -101,7 +102,7 @@ class CheckBoxSerializer(Serializer):
 
 
 class RadioButtonSerializer(Serializer):
-    template_name: str = "radiobutton.xsl"
+    template_name: str = "radio_button.xsl"
 
     @classmethod
     def to_xml(cls, instance: TRadioButtonFormElement) -> str:
@@ -154,6 +155,18 @@ class MultiSelectSerializer(Serializer):
         return xml
 
 
+class MultiOrderedSelectSerializer(Serializer):
+    template_name: str = "multi_ordered_select.xsl"
+
+    @classmethod
+    def to_xml(cls, instance: TMultiOrderedSelectFormElement) -> str:
+        xml = "<multi-ordered-select>"
+        xml += cls.base_attributes(instance)
+        xml += get_option_or_query_xml(instance.options, instance.query)
+        xml += "</multi-ordered-select>"
+        return xml
+
+
 MAPPING = {
     TSimpleTextBoxFormElement: SimpleTextBoxSerializer,
     TNumericTextBoxFormElement: NumericTextBoxSerializer,
@@ -163,6 +176,7 @@ MAPPING = {
     TRadioButtonFormElement: RadioButtonSerializer,
     TSingleSelectFormElement: SingleSelectSerializer,
     TMultiSelectFormElement: MultiSelectSerializer,
+    TMultiOrderedSelectFormElement: MultiOrderedSelectSerializer,
 }
 
 

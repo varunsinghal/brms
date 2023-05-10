@@ -137,8 +137,8 @@ class TMultiSelectFormElement(TFormElement):
     __mapper_args__ = {"polymorphic_identity": "multi_select"}
 
 
-class TMultiSelectOrderedFormElement(TFormElement):
-    __tablename__ = "t_form_multi_select_ordered"
+class TMultiOrderedSelectFormElement(TFormElement):
+    __tablename__ = "t_form_multi_ordered_select"
 
     id: Mapped[int] = mapped_column(
         ForeignKey("t_form_element"), primary_key=True
@@ -146,4 +146,4 @@ class TMultiSelectOrderedFormElement(TFormElement):
     options = Column(String(256))
     query = Column(Text)
 
-    __mapper_args__ = {"polymorphic_identity": "multi_select_ordered"}
+    __mapper_args__ = {"polymorphic_identity": "multi_ordered_select"}
