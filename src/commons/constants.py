@@ -1,0 +1,2 @@
+FIELD_SEPARATOR = "|"
+FORM_PREFIX = "fe"
