@@ -1,116 +1,23 @@
 from unittest import TestCase
 
 from src.commons.database import get_session
-from src.commons.factories import (
-    make_checkbox_factory,
-    make_date_textbox_factory,
-    make_form_template_factory,
-    make_large_textbox_factory,
-    make_multi_ordered_select_factory,
-    make_multi_select_factory,
-    make_numeric_textbox_factory,
-    make_radiobutton_factory,
-    make_simple_textbox_factory,
-    make_single_select_factory,
-)
-from src.commons.models import TFormTemplate
-from src.commons.serializer import serialize
+from src.commons.serializer import FormSubmissionSerializer
 
 
-class TestSerializer(TestCase):
+class TestFormSubmissionSerializer(TestCase):
     def setUp(self) -> None:
         self.session = get_session()
-        self.form_template = self.create_form_template()
+        self.serializer = FormSubmissionSerializer()
 
-    def create_form_template(self) -> TFormTemplate:
-        form_template_factory = make_form_template_factory()
-        form_template = form_template_factory.create()
-        self.session.add(form_template)
+    def test_form_submission(self):
+        data = {
+            "name": "wd",
+            "form_template_id": 1,
+            "fe1": "FE-1",
+            "fe2": "FE-2",
+            "fe3Left": ["FE-3.1"],
+            "fe3": ["FE-3.2", "FE-3.3"],
+        }
+        actual = self.serializer.load(data)
+        self.session.add(actual)
         self.session.commit()
-        return form_template
-
-    def tearDown(self) -> None:
-        #
-        self.session.query(TFormTemplate).delete()
-        self.session.commit()
-
-    def test_simple_textbox(self):
-        textbox = make_simple_textbox_factory().create(
-            form_template=self.form_template,
-        )
-        print(serialize(textbox))
-        self.session.add(textbox)
-        self.session.commit()
-
-    def test_numeric_textbox(self):
-        textbox = make_numeric_textbox_factory().create(
-            form_template=self.form_template,
-        )
-        print(serialize(textbox))
-        self.session.add(textbox)
-        self.session.commit()
-
-    def test_date_textbox(self):
-        textbox = make_date_textbox_factory().create(
-            form_template=self.form_template,
-        )
-        self.session.add(textbox)
-        self.session.commit()
-        print(serialize(textbox))
-
-    def test_large_textbox(self):
-        textbox = make_large_textbox_factory().create(
-            form_template=self.form_template,
-        )
-        self.session.add(textbox)
-        self.session.commit()
-        print(serialize(textbox))
-
-    def test_checkbox(self):
-        checkbox = make_checkbox_factory().create(
-            form_template=self.form_template,
-        )
-        self.session.add(checkbox)
-        self.session.commit()
-        print(serialize(checkbox))
-
-    def test_radiobutton(self):
-        radio_button = make_radiobutton_factory().create(
-            form_template=self.form_template,
-        )
-        self.session.add(radio_button)
-        self.session.commit()
-        print(serialize(radio_button))
-
-    def test_single_select(self):
-        single_select = make_single_select_factory().create(
-            form_template=self.form_template,
-        )
-        self.session.add(single_select)
-        self.session.commit()
-        print(serialize(single_select))
-
-    def test_single_select_with_query(self):
-        single_select = make_single_select_factory().create(
-            form_template=self.form_template,
-            depends_on=True,
-        )
-        self.session.add(single_select)
-        self.session.commit()
-        print(serialize(single_select))
-
-    def test_multi_select(self):
-        multi_select = make_multi_select_factory().create(
-            form_template=self.form_template,
-        )
-        self.session.add(multi_select)
-        self.session.commit()
-        print(serialize(multi_select))
-
-    def test_multi_ordered_select(self):
-        multi_select = make_multi_ordered_select_factory().create(
-            form_template=self.form_template,
-        )
-        self.session.add(multi_select)
-        self.session.commit()
-        print(serialize(multi_select))

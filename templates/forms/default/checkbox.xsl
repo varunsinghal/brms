@@ -6,7 +6,7 @@
         <xsl:variable name="identifier" select="checkbox/identifier" />
         <xsl:variable name="checkedValue" select="checkbox/checked-value" />
         
-        <div class="container">
+        <div class="container mt-2">
             <div class="form-group">
                 
                 <div class="form-check">

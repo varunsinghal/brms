@@ -62,6 +62,7 @@ class TFormSubmission(Model):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
     is_deleted = Column(Boolean, default=False)
+    elements = relationship("TFormElementSubmission", backref="form_submission")
 
     def __repr__(self):
         return f"<FormSubmission-{self.name}>"
@@ -71,7 +72,7 @@ class TFormElementSubmission(Model):
     __tablename__ = "t_form_element_submission"
 
     id = Column(Integer, primary_key=True)
-    from_submission_id = Column(Integer, ForeignKey("t_form_submission.id"))
+    form_submission_id = Column(Integer, ForeignKey("t_form_submission.id"))
     form_element_id = Column(Integer, ForeignKey("t_form_element.id"))
     value = Column(Text)
     element = relationship(

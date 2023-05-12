@@ -1,0 +1,20 @@
+{# _brms/templates/group/index.html_ #}
+
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="h3">
+    {{ group_template.name }}
+</div>
+<br>
+<br>
+
+<div class="">
+    <form method="POST" action="{{ url_for('group_api.create_form_submit', group_template_id=group_template.id) }}"
+        nextLink="{{ url_for('group_app.template_index') }}">
+        {{ form_html | safe }}
+    </form>
+</div>
+
+{% endblock %}

@@ -11,12 +11,13 @@
 <br>
 <div class="list-group list-group-flush">
     {% for group_template in group_templates %}
-    <a href="#" class="list-group-item list-group-item-action mt-2 mb-2" aria-current="true">
+    <a href="{{ url_for('group_app.create_form', group_template_id=group_template.id) }}"
+        class="list-group-item list-group-item-action mt-2 mb-2" aria-current="true">
         <div class="row">
-            <div class="col-9">
+            <div class="col-md-9">
                 <h5 class="mb-1">{{ group_template.name }}</h5>
             </div>
-            <div class="col-3">
+            <div class="col-md-3">
                 <small>Updated {{ group_template.modified_at | time_ago }}</small>
             </div>
         </div>

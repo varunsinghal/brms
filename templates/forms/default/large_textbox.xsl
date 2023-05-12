@@ -5,7 +5,7 @@
         
         <xsl:variable name="identifier" select="large-textbox/identifier" />
         
-        <div class="container">
+        <div class="container mt-2">
             <div class="form-group">
                 
                 <label for="{$identifier}">

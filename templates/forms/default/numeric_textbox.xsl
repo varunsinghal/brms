@@ -7,7 +7,7 @@
         <xsl:variable name="minValue" select="numeric-textbox/min-value"/>
         <xsl:variable name="maxValue" select="numeric-textbox/max-value"/>
         
-        <div class="container">
+        <div class="container mt-2">
             <div class="form-group">
                 
                 <label for="{$identifier}">

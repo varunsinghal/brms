@@ -5,7 +5,7 @@
         
         <xsl:variable name="identifier" select="radio-button/identifier" />
         
-        <div class="container">
+        <div class="container mt-2">
             <div class="form-group">
 
                 <label class="form-check-label" >

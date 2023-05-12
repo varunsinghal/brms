@@ -29,7 +29,7 @@ def make_form_elements(
     elements = []
     for each_factory in factories:
         elements += each_factory.create_batch(
-            fake.random_int(max=5), form_template=form_template
+            fake.random_int(max=1), form_template=form_template
         )
     return elements
 

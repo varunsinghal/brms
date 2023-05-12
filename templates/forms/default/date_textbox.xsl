@@ -7,7 +7,7 @@
         <xsl:variable name="minDate" select="date-textbox/min-date" />
         <xsl:variable name="maxDate" select="date-textbox/max-date" />
         
-        <div class="container">
+        <div class="container mt-2">
             <div class="form-group">
                 
                 <label for="{$identifier}">

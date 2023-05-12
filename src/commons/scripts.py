@@ -10,6 +10,7 @@ from src.commons.factories import (
     make_multi_select_factory,
     make_numeric_textbox_factory,
     make_radiobutton_factory,
+    make_simple_textbox_factory,
     make_single_select_factory,
 )
 from src.commons.models import Model
@@ -41,7 +42,7 @@ def create_factories():
     form_template_factory = make_form_template_factory()
     group_template_factory = make_group_template_factory()
     factories = [
-        make_single_select_factory(),
+        make_simple_textbox_factory(),
         make_numeric_textbox_factory(),
         make_date_textbox_factory(),
         make_large_textbox_factory(),

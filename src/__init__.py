@@ -25,6 +25,7 @@ logging.basicConfig(
 )
 logging.getLogger("faker").setLevel(logging.CRITICAL)
 logging.getLogger("factory").setLevel(logging.CRITICAL)
+logging.getLogger("sqlalchemy.engine.Engine").setLevel(logging.CRITICAL)
 
 
 def create_app(test_config=None):
@@ -49,6 +50,9 @@ def create_app(test_config=None):
     app.register_blueprint(group_app, url_prefix="/views/group")
 
     # apis
+    from src.routes.group import group_api
+
+    app.register_blueprint(group_api, url_prefix="/api/group")
 
     return app
 

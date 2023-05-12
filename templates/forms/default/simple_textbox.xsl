@@ -6,7 +6,7 @@
         <xsl:variable name="identifier" select="simple-textbox/identifier" />
         <xsl:variable name="maxLength" select="simple-textbox/max-length" />
         
-        <div class="container">
+        <div class="container mt-2">
             <div class="form-group">
                 
                 <label for="{$identifier}">

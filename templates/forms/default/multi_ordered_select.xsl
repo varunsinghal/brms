@@ -5,7 +5,7 @@
         
         <xsl:variable name="identifier" select="multi-ordered-select/identifier" />
         
-        <div class="container">
+        <div class="container mt-2">
             <div class="form-group">
                 
                 <label for="{$identifier}">
