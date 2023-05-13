@@ -7,12 +7,16 @@
 <div class="h3">
     {{ group_template.name }}
 </div>
+<div>
+    {{ group_template.description }}
+</div>
 <br>
 <br>
+{% include 'group/nav.html' %}
 
 <div class="">
     <form method="POST" action="{{ url_for('group_api.create_form_submit', group_template_id=group_template.id) }}"
-        nextLink="{{ url_for('group_app.template_index') }}">
+        nextLink="{{ url_for('group_app.info', group_template_id=group_template.id) }}">
         {{ form_html | safe }}
     </form>
 </div>

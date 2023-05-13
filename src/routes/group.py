@@ -11,19 +11,34 @@ form_service = FormsService(get_session())
 
 
 @group_app.route("/")
-def template_index():
-    context = dict(group_templates=group_service.get_group_templates())
-    return render_template("group/index.html", **context)
+def index():
+    group_templates = group_service.get_group_templates()
+    return render_template("group/index.html", group_templates=group_templates)
+
+
+@group_app.route("/<int:group_template_id>", methods=["GET"])
+def info(group_template_id: int):
+    status = request.args.get("status", default=None)
+    group_template = group_service.get_group_template(group_template_id)
+    submissions = form_service.get_submissions(
+        group_template.form_template_id, status
+    )
+    return render_template(
+        "group/info.html",
+        group_template=group_template,
+        submissions=submissions,
+    )
 
 
 @group_app.route("/<int:group_template_id>/create", methods=["GET"])
-def create_form(group_template_id):
+def create(group_template_id):
     group_template = group_service.get_group_template(group_template_id)
     form_html = form_service.get_submit_form(
         group_template.form_template_id, submit_text="Create"
     )
-    context = dict(form_html=form_html, group_template=group_template)
-    return render_template("group/create.html", **context)
+    return render_template(
+        "group/create.html", form_html=form_html, group_template=group_template
+    )
 
 
 @group_api.route("/<int:group_template_id>/create", methods=["POST"])

@@ -1,0 +1,30 @@
+{# requires group_template object #}
+
+<ul class="nav">
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('group_app.index') }}">
+            <i class="fas fa-arrow-left"></i>&ensp;Back
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page"
+            href="{{ url_for('group_app.info', group_template_id=group_template.id, status='approved') }}">
+            Approved
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('group_app.info', group_template_id=group_template.id) }}">
+            My Submissions</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+            href="{{ url_for('group_app.info', group_template_id=group_template.id, status='drafts') }}">
+            My Drafts
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('group_app.create', group_template_id=group_template.id) }}">
+            New Request
+        </a>
+    </li>
+</ul>

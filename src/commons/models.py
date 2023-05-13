@@ -2,6 +2,7 @@ from sqlalchemy import (
     Boolean,
     Column,
     DateTime,
+    Enum,
     ForeignKey,
     Integer,
     String,
@@ -12,6 +13,7 @@ from sqlalchemy.orm import Mapped, declarative_base, mapped_column, relationship
 from sqlalchemy.sql import func
 
 from src.commons.constants import FORM_PREFIX
+from src.commons.entity import FormStatus
 
 Model = declarative_base()
 
@@ -61,6 +63,7 @@ class TFormSubmission(Model):
     modified_at = Column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
+    status = Column(Enum(FormStatus), default=FormStatus.PENDING)
     is_deleted = Column(Boolean, default=False)
     elements = relationship("TFormElementSubmission", backref="form_submission")
 

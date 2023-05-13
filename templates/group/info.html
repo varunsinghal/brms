@@ -1,0 +1,40 @@
+{# _brms/templates/group/index.html_ #}
+
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div class="h3">
+    {{ group_template.name }}
+</div>
+<div>
+    {{ group_template.description }}
+</div>
+<br>
+<br>
+{% include 'group/nav.html' %}
+
+<br />
+<div class="list-group list-group-flush">
+    {% for submission in submissions %}
+    <a href="#" class="list-group-item list-group-item-action mt-2 mb-2" aria-current="true">
+        <div class="row">
+            <div class="col-md-9">
+                <h5 class="mb-1">{{ submission.name }}</h5>
+            </div>
+            <div class="col-md-3">
+                <small>Updated {{ submission.modified_at | time_ago }}</small>
+            </div>
+        </div>
+        <small>
+            Status:
+            <span class="badge bg-{{ submission.status.value.css }} mt-1">
+                {{ submission.status.name }}
+            </span>
+        </small>
+    </a>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

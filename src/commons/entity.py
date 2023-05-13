@@ -16,6 +16,15 @@ class ColorEnum(enum.Enum):
     DANGER = "danger"
     SUCCESS = "success"
     NEUTRAL = "secondary"
+    WARNING = "warning"
+
+
+class FormStatus(enum.Enum):
+    DRAFT = {"css": ColorEnum.PRIMARY.value}
+    PENDING = {"css": ColorEnum.WARNING.value}
+    APPROVED = {"css": ColorEnum.SUCCESS.value}
+    REJECTED = {"css": ColorEnum.DANGER.value}
+    CLOSED = {"css": ColorEnum.NEUTRAL.value}
 
 
 @dataclass
@@ -28,27 +37,23 @@ class Button:
 
 @dataclass
 class SubmitButton(Button):
-    text: str
     fn: str = "submitForm"
     color: ColorEnum = ColorEnum.SUCCESS
 
 
+@dataclass
 class UpdateButton(Button):
-    def __init__(self, text: str) -> None:
-        super().__init__(text)
-        self.fn = "updateForm"
-        self.color = ColorEnum.PRIMARY
+    fn: str = "updateForm"
+    color: ColorEnum = ColorEnum.PRIMARY
 
 
+@dataclass
 class CancelButton(Button):
-    def __init__(self, text: str) -> None:
-        super().__init__(text)
-        self.fn = "goBack"
-        self.color = ColorEnum.NEUTRAL
+    fn: str = "goBack"
+    color: ColorEnum = ColorEnum.NEUTRAL
 
 
+@dataclass
 class DeleteButton(Button):
-    def __init__(self, text: str) -> None:
-        super().__init__(text)
-        self.fn = "deleteForm"
-        self.color = ColorEnum.DANGER
+    fn: str = "deleteForm"
+    color: ColorEnum = ColorEnum.DANGER

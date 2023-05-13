@@ -1,8 +1,11 @@
+from typing import List, Optional
+
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 from src.commons.entity import CancelButton, SimpleTextBox, SubmitButton
 from src.commons.forms_serializer import serialize
-from src.commons.models import TFormTemplate
+from src.commons.models import TFormSubmission, TFormTemplate
 from src.commons.serializer import FormSubmissionSerializer
 from src.services import Service
 
@@ -17,6 +20,25 @@ class FormsService(Service):
             self.session.query(TFormTemplate)
             .filter(TFormTemplate.id == form_template_id)
             .one()
+        )
+
+    def get_submissions(
+        self, form_template_id: int, status: Optional[str] = None
+    ) -> List[TFormSubmission]:
+        criterion = [
+            TFormSubmission.status.name == status.upper() if status else 1 == 1
+        ]
+        return (
+            self.session.query(TFormSubmission)
+            .filter(
+                and_(
+                    TFormSubmission.form_template_id == form_template_id,
+                    TFormSubmission.is_deleted == 0,
+                    *criterion
+                )
+            )
+            .order_by(TFormSubmission.modified_at.desc())
+            .all()
         )
 
     def get_submit_form(

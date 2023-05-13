@@ -11,7 +11,7 @@
 <br>
 <div class="list-group list-group-flush">
     {% for group_template in group_templates %}
-    <a href="{{ url_for('group_app.create_form', group_template_id=group_template.id) }}"
+    <a href="{{ url_for('group_app.info', group_template_id=group_template.id, status='approved') }}"
         class="list-group-item list-group-item-action mt-2 mb-2" aria-current="true">
         <div class="row">
             <div class="col-md-9">
